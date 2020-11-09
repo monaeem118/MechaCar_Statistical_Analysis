@@ -1,0 +1,88 @@
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+MechaCar_mpg_data <- read_csv(file="Resources/MechaCar_mpg.csv")
+```
+
+
+```{r}
+MechaCar_mpg_data
+```
+
+```{r}
+model <- lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD,data=MechaCar_mpg_data) #generate multiple linear regression model
+```
+
+```{r}
+summary(model) #generate summary statistics
+```
+
+```{r}
+suspension_coil_data <- read_csv(file="Resources/Suspension_Coil.csv")
+```
+```{r}
+suspension_coil_data
+```
+```{r}
+total_summary <- suspension_coil_data %>% summarize(Mean=mean(PSI),Median=median(PSI),Variance=var(PSI),SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+total_summary
+```
+
+```{r}
+lot_summary <- suspension_coil_data %>% group_by(Manufacturing_Lot) %>% summarize(Mean=mean(PSI),Median=median(PSI),Variance=var(PSI),SD=sd(PSI), .groups = 'keep') #create summary table with multiple columns
+lot_summary
+```
+
+
+```{r}
+t.test(suspension_coil_data$PSI,mu=1500) #compare sample versus population means
+```
+
+```{r}
+lot <- function(data, lot_num){
+
+filtered_data <- data[deframe(data['Manufacturing_Lot']) == lot_num,]
+
+
+return (filtered_data)
+}
+```
+
+```{r}
+lot1_data <- lot(suspension_coil_data, "Lot1")
+lot1_data
+```
+```{r}
+t.test((lot1_data$PSI),mu=1500)
+```
+
+```{r}
+lot1 <- subset(suspension_coil_data$PSI, suspension_coil_data$Manufacturing_Lot == "Lot1") #using subset to select specific lot PSI
+```
+
+```{r}
+t.test(lot1, mu=1500)
+```
+
+```{r}
+lot2 <- subset(suspension_coil_data$PSI, suspension_coil_data$Manufacturing_Lot == "Lot2") #using subset to select specific lot PSI
+```
+
+```{r}
+t.test(lot2, mu=1500)
+```
+
+```{r}
+lot3 <- subset(suspension_coil_data$PSI, suspension_coil_data$Manufacturing_Lot == "Lot3") #using subset to select specific lot PSI
+```
+
+```{r}
+t.test(lot3, mu=1500)
+```
+
